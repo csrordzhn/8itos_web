@@ -44,7 +44,22 @@ movies = lambda do
   end
   slim :movies
 end
+
+events = lambda do
+  request_url = "https://countdown8itos.herokuapp.com/events"
+  response = HTTParty.get(request_url)
+  if response.code != 200
+    flash[:notice] = "Lo siento 8ita, pero parece que algo falló. ¿Cuál es la ext de Sistemas?"
+    redirect '/'
+  else
+    results = JSON.parse(response.body)
+    @events = results
+  end
+  slim :events
+end
+
 get '/', &home
 get '/countdown', &countdown
 get '/movies', &movies
+get '/events', &events
 end

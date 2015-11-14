@@ -1,6 +1,9 @@
 - unless @movies.empty?
   p Estas son las peliculas que los 8itos tienen pendientes
-  table
+  table class='center'
+    tr
+      th Titulo
+      th Comentario
     - @movies.each do |movie|
       tr
         td.titulo = movie['title']
