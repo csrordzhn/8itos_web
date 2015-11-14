@@ -11,6 +11,7 @@ gem 'hirb'
 gem 'puma'
 gem 'httparty'
 gem 'slim'
+gem 'sinatra-flash'
 
 group :development do
   gem 'sqlite3'
