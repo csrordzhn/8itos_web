@@ -1,0 +1,14 @@
+- unless @events.empty?
+  p Estos son los eventos importantes en la vida de los 8itos
+  table class='center'
+    tr
+      th Fecha
+      th Evento
+    - @events.each do |e|
+      tr
+        td.fecha = "#{e['year']}-#{e['month']}-#{e['day']}"
+        td.evento = e['description']
+    tr
+      a href="/add_event" Agregar un evento
+- else
+  p No hay events en la lista.
