@@ -1,0 +1,9 @@
+- unless @movies.empty?
+  p Estas son las peliculas que los 8itos tienen pendientes
+  table
+    - @movies.each do |movie|
+      tr
+        td.titulo = movie['title']
+        td.comentario = movie['comments']
+- else
+  p No hay peliculas en la cola.

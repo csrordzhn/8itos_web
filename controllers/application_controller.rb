@@ -21,7 +21,6 @@ end
 countdown = lambda do
   request_url = "https://countdown8itos.herokuapp.com/countdown"
   response = HTTParty.get(request_url)
-
   if response.code != 200
     flash[:notice] = "Lo siento 8ita, pero parece que algo falló. ¿Cuál es la ext de Sistemas?"
     redirect '/'
@@ -30,11 +29,22 @@ countdown = lambda do
     @days_left = results['days_left']
     @message = results['message']
   end
-
   slim :countdown
-
 end
 
+movies = lambda do
+  request_url = "https://countdown8itos.herokuapp.com/movies"
+  response = HTTParty.get(request_url)
+  if response.code != 200
+    flash[:notice] = "Lo siento 8ita, pero parece que algo falló. ¿Cuál es la ext de Sistemas?"
+    redirect '/'
+  else
+    results = JSON.parse(response.body)
+    @movies = results
+  end
+  slim :movies
+end
 get '/', &home
 get '/countdown', &countdown
+get '/movies', &movies
 end
