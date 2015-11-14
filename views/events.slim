@@ -8,5 +8,7 @@
       tr
         td.fecha = "#{e['year']}-#{e['month']}-#{e['day']}"
         td.evento = e['description']
+    tr
+      a href="/add_event" Agregar un evento
 - else
   p No hay events en la lista.
