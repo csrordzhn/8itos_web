@@ -1,11 +1,11 @@
 require 'sinatra/base'
 require 'sinatra/flash'
-require 'httparty'
 require 'hirb'
 require 'slim'
 require 'json'
 
 class ApplicationController < Sinatra::Base
+include WebHelper
 
 enable :sessions
 register Sinatra::Flash
@@ -14,52 +14,48 @@ use Rack::MethodOverride
 set :views, File.expand_path('../../views', __FILE__)
 set :public_folder, File.expand_path('../../public', __FILE__)
 
-home = lambda do
-  slim :home
-end
+home = lambda { slim :home }
 
 countdown = lambda do
-  request_url = "https://countdown8itos.herokuapp.com/countdown"
-  response = HTTParty.get(request_url)
-  if response.code != 200
-    flash[:notice] = "Lo siento 8ita, pero parece que algo falló. ¿Cuál es la ext de Sistemas?"
-    redirect '/'
-  else
-    results = JSON.parse(response.body)
-    @days_left = results['days_left']
-    @message = results['message']
-  end
+  get_countdown
   slim :countdown
 end
 
 movies = lambda do
-  request_url = "https://countdown8itos.herokuapp.com/movies"
-  response = HTTParty.get(request_url)
-  if response.code != 200
-    flash[:notice] = "Lo siento 8ita, pero parece que algo falló. ¿Cuál es la ext de Sistemas?"
-    redirect '/'
-  else
-    results = JSON.parse(response.body)
-    @movies = results
-  end
+  movie_list
   slim :movies
 end
 
+get_movie = lambda { slim :add_movie }
+
+add_movie = lambda { add_movie_to_list }
+
 events = lambda do
-  request_url = "https://countdown8itos.herokuapp.com/events"
-  response = HTTParty.get(request_url)
-  if response.code != 200
-    flash[:notice] = "Lo siento 8ita, pero parece que algo falló. ¿Cuál es la ext de Sistemas?"
-    redirect '/'
-  else
-    results = JSON.parse(response.body)
-    @events = results
-  end
+  event_list
   slim :events
 end
 
+get_event = lambda { slim :add_event }
+
+add_event = lambda { add_event_to_list }
+
+get_message = lambda { slim :add_message }
+
+add_message = lambda { add_message_to_list }
+
+# Web Routes
 get '/', &home
+
 get '/countdown', &countdown
+
 get '/movies', &movies
+get '/add_movie', &get_movie
+post '/add_movie', &add_movie
+
 get '/events', &events
+get '/add_event', &get_event
+post '/add_event', &add_event
+
+get '/add_message', &get_message
+post '/add_message', &add_message
 end
